@@ -17,8 +17,12 @@
 <main>
 
     <h1>Create Your Account</h1>
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
 
-    <form method="post" action="/register" id="registerForm">
+
+    <form method="post" action="/register" autocomplete='off' id="registerForm">
 
         <div>
             <label for="name">Name</label>
@@ -29,6 +33,7 @@
                 name="name"
                 placeholder="Enter your name"
                 required
+                autocomplete="new-name"
             >
         </div>
 
@@ -42,6 +47,7 @@
                 name="email"
                 placeholder="Enter your email"
                 required
+                autocomplete='new-email'
             >
         </div>
 
@@ -54,6 +60,7 @@
                 name="password"
                 placeholder="Enter your password"
                 required
+                autocomplete="new-password"
             >
         </div>
 
@@ -93,62 +100,9 @@
 
 </main>
 
-
-<!-- JavaScript / DOM -->
 <script>
 
-    // Form ko select karna
-    const form = document.getElementById("registerForm");
-
-    // Message paragraph ko select karna
-    const message = document.getElementById("message");
-
-
-    // Form submit hone par
-    form.addEventListener("submit", function(event) {
-
-        // User ke inputs lena
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const gender = document.getElementById("gender").value;
-
-
-        // Simple DOM validation
-        if (name.length < 3) {
-
-            event.preventDefault();
-
-            message.textContent = "Name must contain at least 3 characters.";
-
-            return;
-        }
-
-
-        if (password.length < 6) {
-
-            event.preventDefault();
-
-            message.textContent = "Password must contain at least 6 characters.";
-
-            return;
-        }
-
-
-        if (gender === "") {
-
-            event.preventDefault();
-
-            message.textContent = "Please select your gender.";
-
-            return;
-        }
-
-
-        // Agar sab theek hai
-        message.textContent = "Creating your account...";
-
-    });
+   
 
 </script>
 

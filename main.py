@@ -12,6 +12,7 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="my_secret_key_for_python_quiz_hub")
 
 users = []
+scores=[]
 templates = Jinja2Templates(directory="templates")
 #static files ky liey
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -23,60 +24,102 @@ def home(request: Request):
         name="home.html",
         context={}
     )
-
 @app.get('/login', response_class=HTMLResponse)
 def login(request: Request):
+    error = request.query_params.get('error')
+
     return templates.TemplateResponse(
-        request=request,
         name='login.html',
+        request=request,
         context={
-            'request': request
+            'request': request,
+            'error': error
         }
     )
 
 @app.get('/register', response_class=HTMLResponse)
 def register(request: Request):
+    error = request.query_params.get('error')
+
     return templates.TemplateResponse(
-        request=request,
         name='register.html',
+        request=request,
         context={
-           'request': request
+            'request': request,
+            'error': error
         }
     )
 
 @app.post('/register')
-def register(request: Request, name: str = Form(...), email: str = Form(...), password: str = Form(...), gender: str = Form(...)):
+def register(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    gender: str = Form(...)
+):
+
+    for i in users:
+        if i['email'] == email:
+            return RedirectResponse(
+                url='/register?error=Email already registered',
+                status_code=303
+            )
+
     user = {
         'name': name,
         'email': email,
         'password': password,
         'gender': gender
     }
-    users.append(user)
-    
-    # <-- Registration ke baad user email session mein save kiya
-    request.session['user_email'] = email
-    
-    print(user)
-    return RedirectResponse(url='/dashboard', status_code=303)
 
+    users.append(user)
+
+    request.session['user_email'] = email
+    request.session['user_name'] = name
+
+    print(user)
+
+    return RedirectResponse(url='/dashboard', status_code=303)
 @app.post('/login')
 def login(request: Request, email: str = Form(...), password: str = Form(...)):
+    
+    print("Login email:", email)
+    print("Login password:", password)
+    print("Users:", users)
+
     for i in users:
         if i["email"] == email and i["password"] == password:
-            # <-- Successful login par user email session mein save kiya
+
+            print("LOGIN SUCCESS")
+
             request.session['user_email'] = email
+            request.session['user_name'] = i["name"]
+
             return RedirectResponse(url='/dashboard', status_code=303)
 
-    return RedirectResponse(url='/dashboard', status_code=303)
+    print("LOGIN FAILED")
+
+    return RedirectResponse(url='/login?error=Invalid email or password', status_code=303)
+    
+@app.get('/logout')
+def logout(request: Request):
+    request.session.clear()
+
+    return RedirectResponse(url='/login', status_code=303)
+
 
 @app.get('/dashboard', response_class=HTMLResponse)
 def dashboard(request: Request):
+
+    user_email = request.session.get('user_email')
+
     return templates.TemplateResponse(
         name='dashboard.html',
         request=request,
         context={
             'request': request,
+            'email': user_email
         }
     )
 
@@ -88,54 +131,88 @@ def quiz_category(request: Request):
         context={'request': request}
     )
 
-@app.get('/profile', response_class=HTMLResponse)
-def profile(request: Request):
-    return templates.TemplateResponse(
-        name='profile.html',
-        request=request,
-        context={'request': request}
-    )
-
 @app.get('/view', response_class=HTMLResponse)
 def view(request: Request):
+
+    user_email = request.session.get('user_email')
+
+    user_scores = []
+
+    for i in scores:
+        if i['email'] == user_email:
+            user_scores.append(i)
+
     return templates.TemplateResponse(
         name='view.html',
         request=request,
-        context={'request': request}
+        context={
+            'request': request,
+            'scores': user_scores
+        }
     )
+@app.get('/profile', response_class=HTMLResponse)
+def profile(request: Request):
+    user_email = request.session.get('user_email')
+    user_name = request.session.get('user_name')
+
+    return templates.TemplateResponse(
+        name='profile.html',
+        request=request,
+        context={
+            'request': request,
+            'email': user_email,
+            'name': user_name
+        }
+    )
+@app.post('/profile')
+def update_profile(
+    request: Request,
+    new_name: str = Form(...),
+    new_email: str = Form(...)
+):
+    old_email = request.session.get('user_email')
+
+    for i in users:
+        if i['email'] == old_email:
+            i['name'] = new_name
+            i['email'] = new_email
+
+            request.session['user_name'] = new_name
+            request.session['user_email'] = new_email
+
+            break
+
+    return RedirectResponse(url='/profile', status_code=303)   
 
 @app.get('/basic', response_class=HTMLResponse)
 def basic(request: Request):
     return templates.TemplateResponse(
         name='basic.html',
         request=request,
-        context={
-            'request': request
-        }
+        context={'request': request}
     )
-
 @app.post('/basic')
-def basic(request: Request,
-    q1: str = Form(...), q2: str = Form(...), q3: str = Form(...), q4: str = Form(...), q5: str = Form(...),
-    q6: str = Form(...), q7: str = Form(...), q8: str = Form(...), q9: str = Form(...), q10: str = Form(...)):
+def basic(request: Request, 
+    q1: str = Form(...), q2: str = Form(...), q3: str = Form(...), q4: str = Form(...), q5: str = Form(...), 
+    q6: str = Form(...), q7: str = Form(...), q8: str = Form(...), q9: str = Form(...), q10: str = Form(...)): 
     
     score = 0
     message = ''
-    
-    user_answers = {
-        'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5,
-        'q6': q6, 'q7': q7, 'q8': q8, 'q9': q9, 'q10': q10
-    }
-    
-    correct_answers = {
-        "q1": "B", "q2": "B", "q3": "C", "q4": "B", "q5": "C",
-        "q6": "C", "q7": "C", "q8": "B", "q9": "B", "q10": "A"
-    }
-
+     
+    user_answers = { 
+        'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 
+        'q6': q6, 'q7': q7, 'q8': q8, 'q9': q9, 'q10': q10 
+    } 
+     
+    correct_answers = { 
+        "q1": "B", "q2": "B", "q3": "C", "q4": "B", "q5": "C", 
+        "q6": "C", "q7": "C", "q8": "B", "q9": "B", "q10": "A" 
+    } 
+ 
     for value in user_answers:
         if user_answers[value] == correct_answers[value]:
             score += 1
-            
+             
     if 9 <= score <= 10:
         message = "Excellent 🎉"
     elif 7 <= score <= 8:
@@ -144,38 +221,32 @@ def basic(request: Request,
         message = ' average👍'
     else:
         message = 'needs practise'
-        
-    return RedirectResponse(url=f'/result?score={score}&message={message}', status_code=303)
 
+    scores.append({
+        'email': request.session.get('user_email'),
+        'quiz': 'basic',
+        'score': score,
+        'message': message
+    })
+    
+         
+    return RedirectResponse(
+        url=f'/result?score={score}&message={message}&quiz=basic',
+        status_code=303
+    )
 # <-- Naya /result endpoint jo score aur message templates par show karwaye ga
 @app.get('/result', response_class=HTMLResponse)
-def result(request: Request, score: int, message: str):
+def result(request: Request, score: int, message: str, quiz: str):
     return templates.TemplateResponse(
-        name='view.html',  # Aap apni marzi ke template ka naam de sakti hain (e.g., result.html ya view.html)
+        name='result.html',
         request=request,
         context={
             'request': request,
             'score': score,
-            'message': message
+            'message': message,
+            'quiz': quiz
         }
     )
-
-@app.get('/result',response_class=HTMLResponse)
-def result(request:Request,score:int,message:str):
-    return templates.TemplateResponse(request=request,
-                                       name='result.html',
-                                       context={
-                                          'request':request,
-                                          'message':message,
-                                          'score':score
-
-                                      }
-                                       )
-
-
-
-
-
 
 
 @app.get('/variable',response_class=HTMLResponse)
@@ -188,7 +259,7 @@ def variable(request:Request):
         }
     )
 @app.post('/variable')
-def variable(request: Request,
+def variable(request : Request,
     q1: str = Form(...),
     q2: str = Form(...),
     q3: str = Form(...),
@@ -237,8 +308,13 @@ def variable(request: Request,
        message = "Average 👍"
     else:
        message = "Needs Practice 📚"
-
-    return RedirectResponse(url=f'/result?score={score}&message={message}',status_code=303)
+    scores.append({
+    'email': request.session.get('user_email'),
+    'quiz': 'variable',
+    'score': score,
+    'message': message
+})
+    return RedirectResponse(url=f'/result?score={score}&message={message}&quiz=variable',status_code=303)
 
 @app.get('/result', response_class=HTMLResponse)
 def result(request: Request, score: int, message: str):
@@ -262,7 +338,7 @@ def function(request:Request):
         }
     )
 @app.post('/function')
-def funtion (request: Request,
+def function (request: Request,
     q1: str = Form(...),
     q2: str = Form(...),
     q3: str = Form(...),
@@ -311,8 +387,16 @@ def funtion (request: Request,
        message = "Average 👍"
     else:
        message = "Needs Practice 📚"
-
-    return RedirectResponse(url=f'/result?score{score}& message={message}',status_code=303)
+    scores.append({
+    'email': request.session.get('user_email'),
+    'quiz': 'function',
+    'score': score,
+    'message': message
+})
+    return RedirectResponse(
+    url=f'/result?score={score}&message={message}&quiz=function',
+    status_code=303
+)
 @app.get('/exception', response_class=HTMLResponse)
 def exception(request: Request):
     return templates.TemplateResponse(
@@ -361,8 +445,8 @@ def exception(request:Request,
     for i in range(len(user_answers)):
         user=user_answers[i]
         correct=correct_answers[i]
-        for key in user:
-            if(user[key]==correct[key]):
+        for value in user:
+            if(user[value]==correct[value]):
                 score+=1
 
     if 9 <= score <= 10:
@@ -373,8 +457,13 @@ def exception(request:Request,
        message = "Average 👍"
     else:
        message = "Needs Practice 📚"
-
-    return RedirectResponse(url=f'/result?score={score}&message={message}',status_code=303)
+    scores.append({
+    'email': request.session.get('user_email'),
+    'quiz': 'exception',
+    'score': score,
+    'message': message
+})
+    return RedirectResponse(url=f'/result?score={score}&message={message}&quiz=exception',status_code=303)
 @app.get('/file',response_class=HTMLResponse)
 def file(request:Request):
     return templates.TemplateResponse(
@@ -385,7 +474,7 @@ def file(request:Request):
         }
     )
 @app.post('/file')
-def post(request:Request,q1:str=Form(...),
+def file(request:Request,q1:str=Form(...),
     q2: str = Form(...),
     q3: str = Form(...),
     q4:str = Form(...),
@@ -421,11 +510,13 @@ def post(request:Request,q1:str=Form(...),
     {"q10": "D"}
     ]
     for i in user_answers:
-        user=user_answers[i]
-        correct=correct_answers[i]
-        for key in user:
-            if(user[key]==correct[key]):
-                score+=1
+        
+        index = user_answers.index(i)
+        correct = correct_answers[index]
+
+        for key in i:
+           if i[key] == correct[key]:
+              score += 1
         
     if 9 <= score <= 10:
         message = "Excellent 🎉"
@@ -435,11 +526,20 @@ def post(request:Request,q1:str=Form(...),
         message = "Average 👍"
     else:
         message = "Needs Practice 📚"
-    return RedirectResponse()
+    
+    scores.append({
+    'email': request.session.get('user_email'),
+    'quiz': 'file',
+    'score': score,
+    'message': message
+})
+    return RedirectResponse(url=f'/result?score={score}&message={message}&quiz=file',
+    status_code=303
+)
 
     
 @app.get('/advance',response_class=HTMLResponse)
-def file(request:Request):
+def advance(request:Request):
     return templates.TemplateResponse(
         name='advance.html',
         request=request,
@@ -447,14 +547,20 @@ def file(request:Request):
             'request':request
         }
     )
+@app.post('/advance')
+def advance(
+    request: Request,
+    q1: str = Form(...),
+    q2: str = Form(...),
     q3: str = Form(...),
-    q4:str = Form(...),
-    q5:str = Form(...),
-    q6:str = Form(...),
-    q7:str = Form(...),
-    q8:str = Form(...),
-    q9:str = Form(...),
-    q10:str = Form(...),
+    q4: str = Form(...),
+    q5: str = Form(...),
+    q6: str = Form(...),
+    q7: str = Form(...),
+    q8: str = Form(...),
+    q9: str = Form(...),
+    q10: str = Form(...)
+):
     score=0
     message=''
     user_answers=[{'q1':q1},
@@ -469,33 +575,41 @@ def file(request:Request):
                   {'q10':q10}]
 
     correct_answers = [
-    {"q1": "B"},   # y = x, isliye list change hoti hai
-    {"q2": "B"},   # 10 + 5 = 15
-    {"q3": "B"},   # 5 * 5 = 25
-    {"q4": "B"},   # map se har number * 2
-    {"q5": "A"},   # inner function outer ka x access karti hai
-    {"q6": "B"},   # finally ka return override karta hai
-    {"q7": "A"},   # next() pehle 1, phir 2 deta hai
-    {"q8": "A"},   # decorator function ka behavior modify/extend kar sakta hai
-    {"q9": "B"},   # local x = 20, global x = 10
-    {"q10": "B"}   # even numbers [2, 4]
-   ]
+    {"q1": "B"},
+    {"q2": "B"},
+    {"q3": "B"},
+    {"q4": "B"},
+    {"q5": "A"},
+    {"q6": "B"},
+    {"q7": "B"},
+    {"q8": "B"},
+    {"q9": "B"},
+    {"q10": "C"}
+]
     for i in range(len(user_answers)):
         user=user_answers[i]
         correct= correct_answers[i]
         for key in user:
             if ( user[key] == correct[key] ):
-                score+=1
-        if 9 <= score <= 10:
-          message = "Excellent 🎉"
-        elif 7 <= score <= 8:
-          message = "Good 👍"
-        elif 5 <= score <= 6:
-           message = "Average 👍"
-        else:
-            message = "Needs Practice 📚"
-
-    return RedirectResponse(url=f'/result?score{score}& message={message}',status_code=303)
+              score+=1
+    if 9 <= score <= 10:
+        message = "Excellent 🎉"
+    elif 7 <= score <= 8:
+        message = "Good 👍"
+    elif 5 <= score <= 6:
+        message = "Average 👍"
+    else:
+         message = "Needs Practice 📚"
+    scores.append({
+    'email': request.session.get('user_email'),
+    'quiz': 'Advance',
+    'score': score,
+    'message': message
+})
+    return RedirectResponse(
+    url=f'/result?score={score}&message={message}&quiz=advance',
+    status_code=303
+)
 
 
 

@@ -1,39 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>function</title>
-     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-<h1>PYTHON FUNCTION </h1>
+
+<h1>PYTHON FUNCTION</h1>
+
 <p><strong>📊 Difficulty:</strong> Easy</p>
 <p><strong>❓ Questions:</strong> 10</p>
 <p><strong>⏱ Time:</strong> 10 Minutes</p>
+
 <hr>
+
 <form method="post" action="/function">
-  <h3>what is the output?</h3>
-  <pre>
-    def calculate(x):
-       return x*2
-    result = calculate(5)
-    print(result)
-  </pre>
-  <div>
-     <input type="radio" name="q1" value="A"  >5
-  </div>
+
+    <h3>1: What is the output?</h3>
+
+    <pre>
+def calculate(x):
+    return x*2
+
+result = calculate(5)
+print(result)
+    </pre>
+
     <div>
-     <input type="radio" name="q1" value="B"  >7
-  </div>
+        <input type="radio" name="q1" value="A"> 5
+    </div>
+
     <div>
-     <input type="radio" name="q1" value="C"  >10
-  </div>
+        <input type="radio" name="q1" value="B"> 7
+    </div>
+
     <div>
-     <input type="radio" name="q1" value="D"  >Error
-  </div>
-  <hr>
-   <h3>3. What is the output?</h3>
+        <input type="radio" name="q1" value="C"> 10
+    </div>
+
+    <div>
+        <input type="radio" name="q1" value="D"> Error
+    </div>
+
+    <hr>
+
+
+    <h3>2. What is the output?</h3>
+
+    <pre>
+def greet(name):
+    return "Hello " + name
+
+print(greet("Ali"))
+    </pre>
+
+    <input type="radio" name="q2" value="A"> Hello <br>
+    <input type="radio" name="q2" value="B"> Hello Ali <br>
+    <input type="radio" name="q2" value="C"> Ali <br>
+    <input type="radio" name="q2" value="D"> Error <br>
+
+    <hr>
+
+
+    <h3>3. What is the output?</h3>
 
     <pre>
 square = lambda x: x * x
@@ -46,6 +78,7 @@ print(square(6))
     <input type="radio" name="q3" value="D"> Error <br>
 
     <hr>
+
 
     <h3>4. What does the following lambda function return?</h3>
 
@@ -61,6 +94,7 @@ print(add(10, 20))
 
     <hr>
 
+
     <h3>5. What is a higher-order function?</h3>
 
     <input type="radio" name="q5" value="A"> A function that has many lines <br>
@@ -69,6 +103,7 @@ print(add(10, 20))
     <input type="radio" name="q5" value="D"> A function that cannot return a value <br>
 
     <hr>
+
 
     <h3>6. What is the output?</h3>
 
@@ -87,6 +122,7 @@ print(apply_function(double, 5))
     <input type="radio" name="q6" value="D"> Error <br>
 
     <hr>
+
 
     <h3>7. What is the output?</h3>
 
@@ -108,6 +144,7 @@ print(x)
 
     <hr>
 
+
     <h3>8. Which keyword is used when we want to modify a global variable inside a function?</h3>
 
     <input type="radio" name="q8" value="A"> global <br>
@@ -116,6 +153,7 @@ print(x)
     <input type="radio" name="q8" value="D"> public <br>
 
     <hr>
+
 
     <h3>9. What is the output?</h3>
 
@@ -132,10 +170,11 @@ print(count)
 
     <input type="radio" name="q9" value="A"> 5 <br>
     <input type="radio" name="q9" value="B"> 10 <br>
-    <input type="radio" name="q9" value="15"> 15 <br>
+    <input type="radio" name="q9" value="C"> 15 <br>
     <input type="radio" name="q9" value="D"> Error <br>
 
     <hr>
+
 
     <h3>10. What is the output?</h3>
 
@@ -157,6 +196,7 @@ print(outer())
     <input type="radio" name="q10" value="D"> Error <br>
 
     <hr>
+
 
     <button type="submit">✅ Submit Quiz</button>
 
