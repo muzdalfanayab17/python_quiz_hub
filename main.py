@@ -12,8 +12,7 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="my_secret_key_for_python_quiz_hub")
 
 users = []
-
-templates = Jinja2Templates(directory="templates")
+ctemplates = Jinja2Templates(directory="templates")
 #static files ky liey
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
