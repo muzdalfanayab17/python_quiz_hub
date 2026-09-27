@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Handling Quiz</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<h1>🔥 File Handling — Advanced Quiz</h1>
+
+<p><strong>📊 Difficulty:</strong> Hard</p>
+<p><strong>❓ Questions:</strong> 10</p>
+
+<hr>
+
+<form action="/file" method="post">
+
+    <!-- Question 1 -->
+    <h3>1. What will be the output?</h3>
+
+<pre>
+with open("data.txt", "w") as file:
+    file.write("Python")
+
+with open("data.txt", "r") as file:
+    print(file.read())
+</pre>
+
+<input type="radio" name="q1" value="A"> Python <br>
+<input type="radio" name="q1" value="B"> '' <br>
+<input type="radio" name="q1" value="C"> None <br>
+<input type="radio" name="q1" value="D"> FileNotFoundError <br>
+
+<hr>
+
+
+    <!-- Question 2 -->
+    <h3>2. What happens when the following code runs?</h3>
+
+<pre>
+with open("data.txt", "w") as file:
+    file.write("Hello")
+
+with open("data.txt", "w") as file:
+    file.write("World")
+</pre>
+
+<p>What will <strong>data.txt</strong> contain?</p>
+
+<input type="radio" name="q2" value="A"> HelloWorld <br>
+<input type="radio" name="q2" value="B"> World <br>
+<input type="radio" name="q2" value="C"> Hello <br>
+<input type="radio" name="q2" value="D"> Hello World <br>
+
+<hr>
+
+
+    <!-- Question 3 -->
+    <h3>3. What will be printed?</h3>
+
+<pre>
+Suppose data.txt contains:
+
+python
+django
+fastapi
+
+with open("data.txt", "r") as file:
+    print(file.readline())
+    print(file.readline())
+</pre>
+
+<input type="radio" name="q3" value="A">
+python
+<br>
+django
+<br><br>
+
+<input type="radio" name="q3" value="B">
+python django
+<br>
+
+<input type="radio" name="q3" value="C">
+None
+<br>
+
+<input type="radio" name="q3" value="D">
+FileNotFoundError
+<br>
+
+<hr>
+
+
+    <!-- Question 4 -->
+    <h3>4. What is the return type of <code>readlines()</code>?</h3>
+
+<pre>
+with open("data.txt", "r") as file:
+    data = file.readlines()
+</pre>
+
+<input type="radio" name="q4" value="A"> str <br>
+<input type="radio" name="q4" value="B"> tuple <br>
+<input type="radio" name="q4" value="C"> list <br>
+<input type="radio" name="q4" value="D"> dict <br>
+
+<hr>
+
+
+    <!-- Question 5 -->
+    <h3>5. What will be the output?</h3>
+
+<pre>
+with open("data.txt", "w") as file:
+    file.write("ABC")
+
+with open("data.txt", "r") as file:
+    print(file.read(2))
+</pre>
+
+<input type="radio" name="q5" value="A"> ABC <br>
+<input type="radio" name="q5" value="B"> AB <br>
+<input type="radio" name="q5" value="C"> BC <br>
+<input type="radio" name="q5" value="D"> A <br>
+
+<hr>
+
+
+    <!-- Question 6 -->
+    <h3>6. What is the main difference between <code>w</code> and <code>a</code> mode?</h3>
+
+<input type="radio" name="q6" value="A">
+w reads the file, while a deletes it
+<br>
+
+<input type="radio" name="q6" value="B">
+w overwrites existing content, while a appends content
+<br>
+
+<input type="radio" name="q6" value="C">
+w appends content, while a overwrites content
+<br>
+
+<input type="radio" name="q6" value="D">
+Both modes behave exactly the same
+<br>
+
+<hr>
+
+
+    <!-- Question 7 -->
+    <h3>7. What will be the output?</h3>
+
+<pre>
+with open("data.txt", "w") as file:
+    file.write("Hello")
+
+with open("data.txt", "a") as file:
+    file.write("World")
+
+with open("data.txt", "r") as file:
+    print(file.read())
+</pre>
+
+<input type="radio" name="q7" value="A"> Hello <br>
+<input type="radio" name="q7" value="B"> World <br>
+<input type="radio" name="q7" value="C"> HelloWorld <br>
+<input type="radio" name="q7" value="D"> WorldHello <br>
+
+<hr>
+
+
+    <!-- Question 8 -->
+    <h3>8. What will be the output?</h3>
+
+<pre>
+with open("data.txt", "w") as file:
+    file.write("Hello")
+
+with open("data.txt", "r") as file:
+    content = file.read()
+
+print(file.closed)
+</pre>
+
+<input type="radio" name="q8" value="A"> True <br>
+<input type="radio" name="q8" value="B"> False <br>
+<input type="radio" name="q8" value="C"> None <br>
+<input type="radio" name="q8" value="D"> FileNotFoundError <br>
+
+<hr>
+
+
+    <!-- Question 9 -->
+    <h3>9. What will happen?</h3>
+
+<pre>
+file = open("data.txt", "r")
+file.close()
+
+print(file.read())
+</pre>
+
+<input type="radio" name="q9" value="A">
+It prints the file contents
+<br>
+
+<input type="radio" name="q9" value="B">
+It prints an empty string
+<br>
+
+<input type="radio" name="q9" value="C">
+It raises an error because the file is closed
+<br>
+
+<input type="radio" name="q9" value="D">
+It automatically reopens the file
+<br>
+
+<hr>
+
+
+    <!-- Question 10 -->
+    <h3>10. Which mode creates a new file but raises an error if the file already exists?</h3>
+
+<input type="radio" name="q10" value="A"> r <br>
+<input type="radio" name="q10" value="B"> w <br>
+<input type="radio" name="q10" value="C"> a <br>
+<input type="radio" name="q10" value="D"> x <br>
+
+<hr>
+
+<button type="submit">🔥 Submit Quiz</button>
+
+</form>
+
+</body>
+</html>

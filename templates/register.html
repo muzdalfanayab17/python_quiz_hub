@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Python Quiz Hub</title>
+
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<main>
+
+    <h1>Create Your Account</h1>
+
+    <form method="post" action="/register" id="registerForm">
+
+        <div>
+            <label for="name">Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                required
+            >
+        </div>
+
+
+        <div>
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+        </div>
+
+
+
+        <div>
+            <label for="gender">Gender</label>
+
+            <select id="gender" name="gender" required>
+
+                <option value="">Select Gender</option>
+
+                <option value="female">Female</option>
+
+                <option value="male">Male</option>
+
+            </select>
+        </div>
+
+
+
+        <p id="message"></p>
+
+
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+
+    <p>
+        Already have an account?
+        <a href="/login">Login</a>
+    </p>
+
+</main>
+
+
+<!-- JavaScript / DOM -->
+<script>
+
+    // Form ko select karna
+    const form = document.getElementById("registerForm");
+
+    // Message paragraph ko select karna
+    const message = document.getElementById("message");
+
+
+    // Form submit hone par
+    form.addEventListener("submit", function(event) {
+
+        // User ke inputs lena
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const gender = document.getElementById("gender").value;
+
+
+        // Simple DOM validation
+        if (name.length < 3) {
+
+            event.preventDefault();
+
+            message.textContent = "Name must contain at least 3 characters.";
+
+            return;
+        }
+
+
+        if (password.length < 6) {
+
+            event.preventDefault();
+
+            message.textContent = "Password must contain at least 6 characters.";
+
+            return;
+        }
+
+
+        if (gender === "") {
+
+            event.preventDefault();
+
+            message.textContent = "Please select your gender.";
+
+            return;
+        }
+
+
+        // Agar sab theek hai
+        message.textContent = "Creating your account...";
+
+    });
+
+</script>
+
+</body>
+</html>
+```
