@@ -12,7 +12,7 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="my_secret_key_for_python_quiz_hub")
 
 users = []
-ctemplates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates")
 #static files ky liey
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -163,14 +163,14 @@ def result(request: Request, score: int, message: str):
 @app.get('/result',response_class=HTMLResponse)
 def result(request:Request,score:int,message:str):
     return templates.TemplateResponse(request=request,
-                                      name='result.html',
-                                      context={
+                                       name='result.html',
+                                       context={
                                           'request':request,
                                           'message':message,
                                           'score':score
 
                                       }
-    )
+                                       )
 
 
 
