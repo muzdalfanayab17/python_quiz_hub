@@ -5,7 +5,29 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Form
 from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware  # <-- Session ke liye import kiya
+from sqlalchemy import create_engine,Column ,Integer,String,MetaData,Table
+from sqlalchemy.orm import sessionmaker,declarative_base
+DATABASE_URL = "postgresql://postgres:PRINT@localhost:5432/quiz_hub"
 
+engine = create_engine(DATABASE_URL)
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+Base = declarative_base()
+#user table here
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
+    gender = Column(String)
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 # <-- Session Middleware add kiya (Isse session work karega)
@@ -49,7 +71,6 @@ def register(request: Request):
             'error': error
         }
     )
-
 @app.post('/register')
 def register(
     request: Request,
@@ -59,49 +80,63 @@ def register(
     gender: str = Form(...)
 ):
 
-    for i in users:
-        if i['email'] == email:
-            return RedirectResponse(
-                url='/register?error=Email already registered',
-                status_code=303
-            )
+    db = SessionLocal()
 
-    user = {
-        'name': name,
-        'email': email,
-        'password': password,
-        'gender': gender
-    }
+    existing_user = db.query(User).filter(User.email == email).first()
 
-    users.append(user)
+    if existing_user:
+        db.close()
+        return RedirectResponse(
+            url='/register?error=Email already registered',
+            status_code=303
+        )
+
+    new_user = User(
+        name=name,
+        email=email,
+        password=password,
+        gender=gender
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.close()
 
     request.session['user_email'] = email
     request.session['user_name'] = name
 
-    print(user)
+    print(new_user)
 
     return RedirectResponse(url='/dashboard', status_code=303)
 @app.post('/login')
-def login(request: Request, email: str = Form(...), password: str = Form(...)):
-    
-    print("Login email:", email)
-    print("Login password:", password)
-    print("Users:", users)
+def login(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...)
+):
 
-    for i in users:
-        if i["email"] == email and i["password"] == password:
+    db = SessionLocal()
 
-            print("LOGIN SUCCESS")
+    user = db.query(User).filter(User.email == email).first()
 
-            request.session['user_email'] = email
-            request.session['user_name'] = i["name"]
+    if user and user.password == password:
 
-            return RedirectResponse(url='/dashboard', status_code=303)
+        request.session['user_email'] = user.email
+        request.session['user_name'] = user.name
 
-    print("LOGIN FAILED")
+        db.close()
 
-    return RedirectResponse(url='/login?error=Invalid email or password', status_code=303)
-    
+        return RedirectResponse(
+            url='/dashboard',
+            status_code=303
+        )
+
+    db.close()
+
+    return RedirectResponse(
+        url='/login?error=Invalid email or password',
+        status_code=303
+    )
 @app.get('/logout')
 def logout(request: Request):
     request.session.clear()
@@ -149,6 +184,7 @@ def view(request: Request):
             'request': request,
             'scores': user_scores
         }
+        
     )
 @app.get('/profile', response_class=HTMLResponse)
 def profile(request: Request):

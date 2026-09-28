@@ -13,11 +13,12 @@
 
 <p><strong>📊 Difficulty:</strong> Easy</p>
 <p><strong>❓ Questions:</strong> 10</p>
-<p><strong>⏱ Time:</strong> 10 Minutes</p>
+<p><strong>⏱ Time:</strong> 3 Minutes</p>
 
 <hr>
+<div id='timer'>Time Left:3:00</div>
 
-<form method="post" action="/function">
+<form id='quizForm' method="post" action="/function">
 
     <h3>1: What is the output?</h3>
 
@@ -198,9 +199,10 @@ print(outer())
     <hr>
 
 
-    <button type="submit">✅ Submit Quiz</button>
+    <button  id='submitQuizBtn' type="submit">✅ Submit Quiz</button>
 
 </form>
 
+<script src="/static/jsfiles/quiz.js"></script>
 </body>
 </html>

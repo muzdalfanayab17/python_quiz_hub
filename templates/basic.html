@@ -1,3 +1,16 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Python Basics Quiz</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+
 <body>
 
 <main class="quiz-container">
@@ -7,12 +20,12 @@
     <div class="quiz-info">
         <p><strong>📊 Difficulty:</strong> Easy</p>
         <p><strong>❓ Questions:</strong> 10</p>
-        <p><strong>⏱ Time:</strong> 10 Minutes</p>
+        <p><strong>⏱ Time:</strong> 3 Minutes</p>
     </div>
+    <div id='timer'>Time left 03:00</div>
+    <form action="/basic" id='quizForm' method="post">
 
-    <form action="/basic" method="post">
-
-        <div class="quiz-question">
+        <div  class="quiz-question">
             <h3>1. Who developed Python?</h3>
 
             <input type="radio" name="q1" value="A"> James Gosling <br>
@@ -112,12 +125,13 @@
         </div>
 
 
-        <button type="submit">✅ Submit Quiz</button>
+        <button id='submitQuizBtn' type="submit">✅ Submit Quiz</button>
 
     </form>
 
     <a href="/dashboard">← Back to Dashboard</a>
 
 </main>
+<script src="/static/jsfiles/quiz.js"></script>
 
 </body>

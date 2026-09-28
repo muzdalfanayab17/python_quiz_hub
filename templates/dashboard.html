@@ -16,7 +16,7 @@
 
         <h1>PYTHON QUIZ_HUB</h1>
 
-        <h2>Welcome {{ name }}</h2>
+        <h2 id='welcomeMessage'>Welcome {{ name }}</h2>
 
         <p>Email: {{ email }}</p>
 
@@ -37,7 +37,7 @@
             <p>Start your Python quiz</p>
 
             <a href="/quiz_category">
-                <button type="button">Start</button>
+                <button  id='startQuizBtn' type="button">Start</button>
             </a>
 
         </div>
@@ -75,7 +75,7 @@
     <hr>
 
     <!-- Logout -->
-    <a class="logout" href="/logout">Logout</a>
+    <a class="logout" href="/logout" id='logoutLink'>Logout</a>
 
 </main>
 
@@ -88,6 +88,8 @@
     </p>
 
 </footer>
+<script src="/static/jsfiles/dashboard.js"></script>
+
 
 </body>
 </html>

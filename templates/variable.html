@@ -18,11 +18,12 @@
 
 <p><strong>📊 Difficulty:</strong> Easy</p>
 <p><strong>❓ Questions:</strong> 10</p>
-<p><strong>⏱ Time:</strong> 10 Minutes</p>
+<p><strong>⏱ Time:</strong> 3 Minutes</p>
 
 <hr>
+<div id='timer'>Time Left:3:00</div>
 
-<form action="/variable" method="post">
+<form id='quizForm' action="/variable" method="post">
 
     <!-- Question 1 -->
     <h3>1. Which of the following is a valid Python variable name?</h3>
@@ -164,9 +165,10 @@ print(int(num) + 50)
     <hr>
 
 
-    <button type="submit">✅ Submit Quiz</button>
+    <button  id ='submitQuizBtn' type="submit">✅ Submit Quiz</button>
 
 </form>
+<script src="/static/jsfiles/quiz.js"></script>
 
 </body>
 </html>
