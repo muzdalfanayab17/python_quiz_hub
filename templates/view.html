@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Score</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<main>
+
+    <h1>🏆 My Quiz Scores</h1>
+
+    {% if scores %}
+
+        {% for result in scores %}
+
+            <div class="dashboard-card">
+
+                <h2>{{ result.quiz }}</h2>
+
+                <p>Score: {{ result.score }}/10</p>
+
+                <p>{{ result.message }}</p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>You have not attempted any quiz yet.</p>
+
+    {% endif %}
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>App Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<main class="dashboard-container">
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+
+        <h1>PYTHON QUIZ_HUB</h1>
+
+        <h2 id='welcomeMessage'>Welcome {{ name }}</h2>
+
+        <p>Email: {{ email }}</p>
+
+        <h3>Ready to test your Python skills?</h3>
+
+    </div>
+
+    <hr>
+
+    <!-- Dashboard Cards -->
+    <div class="dashboard-cards">
+
+        <!-- Start Quiz -->
+        <div class="dashboard-card">
+
+            <h2>🐍 Start Quiz</h2>
+
+            <p>Start your Python quiz</p>
+
+            <a href="/quiz_category">
+                <button  id='startQuizBtn' type="button">Start</button>
+            </a>
+
+        </div>
+
+
+        <!-- View Score -->
+        <div class="dashboard-card">
+
+            <h2>🏆 View Score</h2>
+
+            <p>Check your latest score</p>
+
+            <a href="/view">
+                <button type="button">View</button>
+            </a>
+
+        </div>
+
+
+        <!-- Profile -->
+        <div class="dashboard-card">
+
+            <h2>👤 Profile</h2>
+
+            <p>View your profile</p>
+
+            <a href="/profile">
+                <button type="button">Profile</button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Logout -->
+    <a class="logout" href="/logout" id='logoutLink'>Logout</a>
+
+</main>
+
+
+<!-- Footer -->
+<footer>
+
+    <p>
+        &copy; 2026 Python Quiz Hub. All Rights Reserved.
+    </p>
+
+</footer>
+<script src="/static/jsfiles/dashboard.js"></script>
+
+
+</body>
+</html>

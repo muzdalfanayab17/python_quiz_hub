@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Python Quiz</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<main>
+
+    <h1>🐍 Advanced Python Quiz</h1>
+    <div id="timer">Time Left: 03:00</div>
+    <form id='quizForm' method="post" action="/advance">
+
+        <!-- Question 1 -->
+        <div>
+            <label>1. Which keyword is used to create a generator?</label>
+
+            <select name="q1" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. return</option>
+                <option value="B">B. yield</option>
+                <option value="C">C. generate</option>
+                <option value="D">D. generator</option>
+            </select>
+        </div>
+
+
+        <!-- Question 2 -->
+        <div>
+            <label>2. Which symbol is commonly used for a decorator?</label>
+
+            <select name="q2" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. #</option>
+                <option value="B">B. @</option>
+                <option value="C">C. $</option>
+                <option value="D">D. &</option>
+            </select>
+        </div>
+
+
+        <!-- Question 3 -->
+        <div>
+            <label>3. Which keyword is used to handle an exception?</label>
+
+            <select name="q3" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. catch</option>
+                <option value="B">B. except</option>
+                <option value="C">C. error</option>
+                <option value="D">D. handle</option>
+            </select>
+        </div>
+
+
+        <!-- Question 4 -->
+        <div>
+            <label>4. Which special method is called when an object is created?</label>
+
+            <select name="q4" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. __start__()</option>
+                <option value="B">B. __init__()</option>
+                <option value="C">C. __create__()</option>
+                <option value="D">D. __new_object__()</option>
+            </select>
+        </div>
+
+
+        <!-- Question 5 -->
+        <div>
+            <label>5. Which operator is used to unpack a list into function arguments?</label>
+
+            <select name="q5" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. *</option>
+                <option value="B">B. &</option>
+                <option value="C">C. #</option>
+                <option value="D">D. @</option>
+            </select>
+        </div>
+
+
+        <!-- Question 6 -->
+        <div>
+            <label>6. Which keyword is used to define an asynchronous function?</label>
+
+            <select name="q6" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. async_function</option>
+                <option value="B">B. async</option>
+                <option value="C">C. await</option>
+                <option value="D">D. asynchronous</option>
+            </select>
+        </div>
+
+
+        <!-- Question 7 -->
+        <div>
+            <label>7. Which keyword is used to create an anonymous function?</label>
+
+            <select name="q7" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. anonymous</option>
+                <option value="B">B. lambda</option>
+                <option value="C">C. function</option>
+                <option value="D">D. def</option>
+            </select>
+        </div>
+
+
+        <!-- Question 8 -->
+        <div>
+            <label>8. Which feature allows a class to inherit from another class?</label>
+
+            <select name="q8" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. Encapsulation</option>
+                <option value="B">B. Inheritance</option>
+                <option value="C">C. Iteration</option>
+                <option value="D">D. Compilation</option>
+            </select>
+        </div>
+
+
+        <!-- Question 9 -->
+        <div>
+            <label>9. Which keyword is used to create a context manager block?</label>
+
+            <select name="q9" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. context</option>
+                <option value="B">B. with</option>
+                <option value="C">C. manage</option>
+                <option value="D">D. using</option>
+            </select>
+        </div>
+
+
+        <!-- Question 10 -->
+        <div>
+            <label>10. Which keyword is used to pause a generator and return a value?</label>
+
+            <select name="q10" required>
+                <option value="">Select Answer</option>
+                <option value="A">A. pause</option>
+                <option value="B">B. return</option>
+                <option value="C">C. yield</option>
+                <option value="D">D. stop</option>
+            </select>
+        </div>
+
+
+        <button id='submitQuizBtn' type="submit">Submit Advanced Quiz</button>
+
+    </form>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</main>
+<script src="/static/jsfiles/quiz.js"></script>
+
+</body>
+</html>

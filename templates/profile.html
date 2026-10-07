@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<main class="profile-container">
+
+    <h1>User Profile</h1>
+
+    <div class="profile-info">
+
+        <p>
+            <strong>Name:</strong> {{ name }}
+        </p>
+
+        <p>
+            <strong>Email:</strong> {{ email }}
+        </p>
+
+    </div>
+
+    <h2>Change Your Information</h2>
+
+    <form method="post" id="profileForm" action="/profile">
+
+        <div>
+            <label>New Name</label>
+
+            <input
+                type="text"
+                id="newName"
+                value="{{ name }}"
+                name="new_name"
+            >
+        </div>
+
+        <div>
+            <label>New Email</label>
+
+            <input
+                type="email"
+                value="{{ email }}"
+                name="new_email"
+            >
+        </div>
+
+        <button type="submit">Save</button>
+
+    </form>
+
+    <a href="/dashboard">Dashboard</a>
+
+</main>
+
+<script src="/static/jsfiles/profile.js"></script>
+
+</body>
+</html>
